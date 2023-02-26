@@ -12,6 +12,9 @@ public class TempO2 : MonoBehaviour
     public Slider O2;
     public bool o;
 
+    public Slider Hp; 
+
+
 
     // Update is called once per frame
     void Update()
@@ -34,6 +37,10 @@ public class TempO2 : MonoBehaviour
         {
             O2.value += deg ;
         }
+        if (( temp.value == temp.maxValue ) || ( O2.value == O2.minValue )) 
+        {
+            Hp.value -= 0.1f; 
+        }
     }
 
     public void OnTriggerEnter(Collider other)
@@ -45,6 +52,11 @@ public class TempO2 : MonoBehaviour
         if (other.CompareTag("O2"))
         {
             o = true;
+        }
+        if (other.CompareTag("health"))
+        {
+            Hp.value += 20f ;
+            Destroy(other.gameObject);
         }
     }
     public void OnTriggerExit(Collider other)
