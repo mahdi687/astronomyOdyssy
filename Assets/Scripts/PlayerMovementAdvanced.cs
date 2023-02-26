@@ -16,6 +16,7 @@ public class PlayerMovementAdvanced : MonoBehaviour
     public float climbSpeed;
     public float vaultSpeed;
     public float airMinSpeed;
+    public float swingSpeed;
 
     public float speedIncreaseMultiplier;
     public float slopeIncreaseMultiplier;
@@ -68,6 +69,7 @@ public class PlayerMovementAdvanced : MonoBehaviour
         unlimited,
         walking,
         sprinting,
+        swinging,
         wallrunning,
         climbing,
         vaulting,
@@ -81,10 +83,11 @@ public class PlayerMovementAdvanced : MonoBehaviour
     public bool wallrunning;
     public bool climbing;
     public bool vaulting;
+    public bool swinging;
 
     public bool freeze;
     public bool unlimited;
-    
+
     public bool restricted;
 
     public TextMeshProUGUI text_speed;
@@ -210,7 +213,12 @@ public class PlayerMovementAdvanced : MonoBehaviour
             else
                 desiredMoveSpeed = sprintSpeed;
         }
-
+        // Mode - swinging 
+        else if (swinging)
+        {
+            state = MovementState.swinging;
+            desiredMoveSpeed = swingSpeed;
+        }
         // Mode - Crouching
         else if (crouching)
         {
@@ -316,7 +324,7 @@ public class PlayerMovementAdvanced : MonoBehaviour
             rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
 
         // turn gravity off while on slope
-        if(!wallrunning) rb.useGravity = !OnSlope();
+        if (!wallrunning) rb.useGravity = !OnSlope();
     }
 
     private void SpeedControl()
@@ -351,7 +359,7 @@ public class PlayerMovementAdvanced : MonoBehaviour
 
         rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
     }
-    private void ResetJump()
+    public void ResetJump()
     {
         readyToJump = true;
 
